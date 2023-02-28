@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestAutomationEssentials.Selenium</name>
+    </assembly>
+    <members>
+        <member name="T:TestAutomationEssentials.Selenium.Browser">
+            <summary>
+            Represents an instance of a browser
+            </summary>
+        </member>
+        <member name="F:TestAutomationEssentials.Selenium.Browser.WebDriver">
+            <summary>
+            Provides access to the underlying <see cref="T:OpenQA.Selenium.IWebDriver"/>
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.#ctor(System.String,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes the instance of the object using the specified description and <see cref="T:OpenQA.Selenium.IWebDriver"/>
+            </summary>
+            <param name="description">The description of the browser. This is used for logging</param>
+            <param name="webDriver">The WebDriver instance that is used to communicate with the browser</param>
+            <exception cref="T:System.ArgumentNullException">one of the arguments are null</exception>
+            <remarks>
+            This overload is provided only for backward compatibility and it works only with MSTest V1.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.#ctor(System.String,OpenQA.Selenium.IWebDriver,TestAutomationEssentials.Common.ExecutionContext.TestExecutionScopesManager)">
+            <summary>
+            Initializes the instance of the object using the specified description and <see cref="T:OpenQA.Selenium.IWebDriver"/>
+            </summary>
+            <param name="description">The description of the browser. This is used for logging</param>
+            <param name="webDriver">The WebDriver instance that is used to communicate with the browser</param>
+            <param name="testExecutionScopesManager">The test execution scope manager of your tests (See remarks)</param>
+            <exception cref="T:System.ArgumentNullException">one of the arguments are null</exception>
+            <remarks>
+            The <paramref name="testExecutionScopesManager"/> is used to automatically close any windows that 
+            are opened using <see cref="M:TestAutomationEssentials.Selenium.Browser.OpenWindow(System.Action,System.String)"/>, at the end of the current test or active scope.
+            <br/>
+            If you're using TestAutomationEssentials.MSTest or TestAutomationEssentials.MSTestV2, simply pass
+            <see cref="T:TestAutomationEssentials.Common.ExecutionContext.TestExecutionScopesManager"/>. Otherwise, create an instance of <see cref="T:TestAutomationEssentials.Common.ExecutionContext.TestExecutionScopesManager"/>
+            and pass it.
+            </remarks>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.Browser.MainWindow">
+            <summary>
+            Returns the browser window that was activew when the browser was opened
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.Browser.DOMRoot">
+            <summary>
+            Always returns itself
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.NavigateToUrl(System.String)">
+            <summary>
+            Navigates the main window to the specified url
+            </summary>
+            <param name="url">The url to navigate to</param>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.GetWebDriver">
+            <summary>
+            Returns the underlying IWebDriver object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.Dispose">
+            <summary>
+            Closes the Selenium driver
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.OpenWindow(System.Action,System.String)">
+            <summary>
+            Invokes a delegate that causes a new window to open, and return an object representing the new window
+            </summary>
+            <param name="action">The delegate that should cause a new window to open</param>
+            <param name="windowDescription">A description that will identify the window in the log</param>
+            <returns>The <see cref="T:TestAutomationEssentials.Selenium.BrowserWindow"/> object that represent the newly opened window</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> or <paramref name="windowDescription"/> are null</exception>
+            <exception cref="T:System.TimeoutException">A new window wasn't opened for 60 seconds after the delegate completed</exception>
+            <remarks>
+            When the current <see cref="T:TestAutomationEssentials.Common.ExecutionContext.IIsolationScope"/> ends, the window is automatically closed
+            </remarks>
+            <example>
+            <code>
+            var openNewWindowButton = myBrowser.WaitForElement(By.Id("openNewWindowButtonId"), "Open new window button");
+            var newWindow = myBrowser.OpenWindow(() => openNewButton.Click(), "New window");
+            Assert.AreEqual("New window Title", newWindow.Title);
+            </code>
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.OpenWindow(System.Action,System.String,System.TimeSpan)">
+            <summary>
+            Invokes a delegate that causes a new window to open, and return an object representing the new window
+            </summary>
+            <param name="action">The delegate that should cause a new window to open</param>
+            <param name="windowDescription">A description that will identify the window in the log</param>
+            <param name="timeout">The maximal time to wait for the window to open</param>
+            <returns>The <see cref="T:TestAutomationEssentials.Selenium.BrowserWindow"/> object that represent the newly opened window</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> or <paramref name="windowDescription"/> are null</exception>
+            <exception cref="T:System.TimeoutException">A new window wasn't opened for the specified timeout after the delegate completed</exception>
+            <remarks>
+            When the current <see cref="T:TestAutomationEssentials.Common.ExecutionContext.IIsolationScope"/> ends, the window is automatically closed
+            </remarks>
+            <example>
+            <code>
+            var openNewWindowButton = myBrowser.WaitForElement(By.Id("openNewWindowButtonId"), "Open new window button");
+            var newWindow = myBrowser.OpenWindow(() => openNewButton.Click(), "New window");
+            Assert.AreEqual("New window Title", newWindow.Title);
+            </code>
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Browser.Activate">
+            <inheritdoc />
+        </member>
+        <member name="T:TestAutomationEssentials.Selenium.BrowserElement">
+            <summary>
+            Represents a single DOM element in a browser
+            </summary>
+            <remarks>
+            This class wraps Selenium's <see cref="T:OpenQA.Selenium.IWebElement"/> to provide additional capabilities for logging, automatic waiting and more.
+            </remarks>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.DOMRoot">
+            <summary>
+            Returns the root of the DOM that contains this object. This can be the browser, the containing frame or a window.
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.#ctor(TestAutomationEssentials.Selenium.BrowserElement,System.String)">
+            <summary>
+            Constructs a new instance of <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> by copying its properties, except of its description from another element
+            </summary>
+            <param name="otherElement">The existing element to copy its properties from</param>
+            <param name="description">The new description to use for the new object</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="otherElement"/> is null</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.#ctor(TestAutomationEssentials.Selenium.BrowserElement)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="otherElement">Other object from which to copy the properties into the new object</param>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.#ctor(TestAutomationEssentials.Selenium.ElementsContainer,OpenQA.Selenium.By,System.Func{System.Collections.Generic.IReadOnlyCollection{OpenQA.Selenium.IWebElement},OpenQA.Selenium.IWebElement},System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> given its container, a 'By' filter a selector and description
+            </summary>
+            <param name="container">The container that contains the relevant element. Typically this is a <see cref="T:TestAutomationEssentials.Selenium.Browser"/>, <see cref="T:TestAutomationEssentials.Selenium.BrowserWindow"/>, <see cref="T:TestAutomationEssentials.Selenium.Frame"/> or a containing <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/></param>
+            <param name="by">A filter mechanism used to filter the matching elements</param>
+            <param name="selector">A delegate that is used to select the sepecific element from the filtered elements</param>
+            <param name="description">The description of the new element</param>
+            <exception cref="T:System.ArgumentNullException">Any of the arguments is null</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.#ctor(TestAutomationEssentials.Selenium.ElementsContainer,OpenQA.Selenium.By,System.String)">
+            <summary>
+            Initialized a new instance of <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> given its container, a specific 'By' filter and description
+            </summary>
+            <param name="container">The container that contains the relevant element. Typically this is a <see cref="T:TestAutomationEssentials.Selenium.Browser"/>, <see cref="T:TestAutomationEssentials.Selenium.BrowserWindow"/>, <see cref="T:TestAutomationEssentials.Selenium.Frame"/> or a containing <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/></param>
+            <param name="by">A filter mechanism used to find the element. If multiple elements match the filter, the first one is used</param>
+            <param name="description">The description of the new element</param>
+            <exception cref="T:System.ArgumentNullException">Any of the arguments is null</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.Click">
+            <inheritdoc />
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.GetAttribute(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Text">
+            <summary>
+             Gets or sets the text of this element
+            </summary>
+            <exception cref="T:OpenQA.Selenium.StaleElementReferenceException">Thrown when the target element is no longer valid in the document DOM</exception>
+            <remarks>The setter of this property can be used instead of <see cref="M:OpenQA.Selenium.IWebElement.SendKeys(System.String)"/>. However, in addition to <see cref="M:OpenQA.Selenium.IWebElement.SendKeys(System.String)"/>
+            it first clears the current content of the element and also logs the typeing to the Log using <see cref="T:TestAutomationEssentials.Common.Logger"/></remarks>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Enabled">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Selected">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Location">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Size">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserElement.Displayed">
+            <inheritdoc />
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.DoubleClick">
+            <summary>
+            Performs a double-click on the element
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.GetSearchContext">
+            <inheritdoc />
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.Activate">
+            <inheritdoc />
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.Hover">
+            <summary>
+            Hovers the mouse over the element
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.GetParent(System.String)">
+            <summary>
+            Returns the immediate parent element containing the current element
+            </summary>
+            <param name="description">The description to give to the parent element</param>
+            <returns>A <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> that represents the parent element</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.DragAndDrop(TestAutomationEssentials.Selenium.BrowserElement)">
+            <summary>
+            Drags the current element onto the target element
+            </summary>
+            <param name="target">The target element to drop the current element onto</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is null</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.WaitToDisappear(System.Int32)">
+            <summary>
+            Waits for the current element to disappear. That is, either become invisible or completely removed from the DOM
+            </summary>
+            <param name="seconds">Timeout in seconds to wait for the element to disappear</param>
+            <exception cref="T:System.TimeoutException">The current element hasn't been disappeared for the specified period</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserElement.WaitToDisappear(System.TimeSpan)">
+            <summary>
+            Waits for the current element to disappear. That is, either become invisible or completely removed from the DOM
+            </summary>
+            <param name="timeout">Timeout to wait for the element to disappear</param>
+            <exception cref="T:System.TimeoutException">The current element hasn't been disappeared for the specified period</exception>
+        </member>
+        <member name="T:TestAutomationEssentials.Selenium.BrowserWindow">
+            <summary>
+            Represents a browser window
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserWindow.#ctor(TestAutomationEssentials.Selenium.Browser,System.String,System.String)">
+            <summary>
+            Initializes the <see cref="T:TestAutomationEssentials.Selenium.BrowserWindow"/> given the specified browser, window handle, and a description
+            </summary>
+            <param name="browser">The browser object that this window belongs to</param>
+            <param name="windowHandle">The handle of the browser window as returned from <see cref="P:OpenQA.Selenium.IWebDriver.WindowHandles"/> or <see cref="P:OpenQA.Selenium.IWebDriver.CurrentWindowHandle"/></param>
+            <param name="description">The description of the window, as you want to appear in the log</param>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserWindow.Activate">
+            <inheritdoc />
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserWindow.DOMRoot">
+            <summary>
+            Always returns itself
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserWindow.Browser">
+            <summary>
+            Returns the owning browser
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserWindow.Title">
+            <summary>
+            Returns the current title of the window
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.BrowserWindow.Url">
+            <summary>
+            Gets or sets the current URL of the browser window
+            </summary>
+            <remarks>
+            Setting this property is exactly the same as calling <see cref="M:TestAutomationEssentials.Selenium.BrowserWindow.NavigateToUrl(System.String)"/>
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserWindow.Close">
+            <summary>
+            Closes the current window
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.BrowserWindow.NavigateToUrl(System.String)">
+            <summary>
+            Navigates the current browser window to the specified URL
+            </summary>
+            <param name="url">The URL to navigate to</param>
+            <remarks>
+            This method records the operation to the log using <see cref="T:TestAutomationEssentials.Common.Logger"/>
+            </remarks>
+        </member>
+        <member name="T:TestAutomationEssentials.Selenium.ElementsContainer">
+            <summary>
+            Acts as a base class for all objects that can contain DOM elements
+            </summary>
+        </member>
+        <member name="F:TestAutomationEssentials.Selenium.ElementsContainer.DefaultWaitTimeout">
+            <summary>
+            The default timeout that is used to wait for elements to appear or disappear
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.#ctor(System.String)">
+            <summary>
+            Initializes the instance of <see cref="T:TestAutomationEssentials.Selenium.ElementsContainer"/> with the specified description
+            </summary>
+            <param name="description">A description representing the element in the log</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="description"/> is null</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.GetFrame(System.String,System.String)">
+            <summary>
+            Returns the specified frame which is contained inside the current container
+            </summary>
+            <param name="frameName">The name of the frame</param>
+            <param name="description">A description representing the frame in the log</param>
+            <returns>An object representing the specified frame</returns>
+            <exception cref="T:System.ArgumentNullException">Any of the arguments is null</exception>
+            <exception cref="T:System.TimeoutException">The frame wasn't found after <see cref="F:TestAutomationEssentials.Selenium.ElementsContainer.DefaultWaitTimeout"/> seconds</exception>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.Activate">
+            <summary>
+            Ensures that the DOM context of this object is the active one.
+            </summary>
+            <remarks>
+            This method must be called before any operation that uses the object returned by <see cref="M:TestAutomationEssentials.Selenium.ElementsContainer.GetSearchContext"/>.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.GetFrame(OpenQA.Selenium.By,System.String)">
+            <summary>
+            Returns the frame that matches the 'by' criteria which is contained inside the current container
+            </summary>
+            <param name="by">The criteria that is used to locate the frame element</param>
+            <param name="description">A description representing the frame in the log</param>
+            <returns>An object representing the specified frame</returns>
+            <exception cref="T:System.ArgumentNullException">Any of the arguments is null</exception>
+            <exception cref="T:System.TimeoutException">The frame wasn't found after <see cref="F:TestAutomationEssentials.Selenium.ElementsContainer.DefaultWaitTimeout"/> seconds</exception>
+            <remarks>If more than 1 frame matches the specified criteria, the first match is returned;</remarks>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.ElementsContainer.DOMRoot">
+            <summary>
+            When implemented in a derived class, should return the root of the DOM that contains this object. This can be the browser, a containing frame or a window.
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.WaitForElement(OpenQA.Selenium.By,System.String,System.Int32)">
+            <summary>
+            Finds an element, waiting for it to appear for the specified time if needed.
+            </summary>
+            <param name="by">The locator to use in order to find the element</param>
+            <param name="description">The description of the element to find</param>
+            <param name="seconds">Number of seconds to wait. If this parameter is omitted, <see cref="F:TestAutomationEssentials.Selenium.ElementsContainer.DefaultWaitTimeout"/> is used</param>
+            <returns>A <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> representing the found element</returns>
+            <exception cref="T:System.TimeoutException">The element is not found after the specified number of seconds</exception>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.ElementsContainer.Description">
+            <summary>
+            Returns the description of the current object
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.GetSearchContext">
+            <summary>
+            Returns the underlying object on which you can find elements using the WebDriver API.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.FindElements(OpenQA.Selenium.By,System.String)">
+            <summary>
+            Returns all child elements that match the specified locator
+            </summary>
+            <param name="by">The locator to use to find the elements</param>
+            <param name="description">A common description prefix to assign to the matching elements. The actual 
+            description of the returned elements will have a sequential number appended to the specified description</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:TestAutomationEssentials.Selenium.BrowserElement"/> containing the matching elements</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.ElementsContainer.ElementAppears(OpenQA.Selenium.By)">
+            <summary>
+            Determines whether an element matching the specified locator exists and is visible
+            </summary>
+            <param name="by">The locator of the element</param>
+            <returns>True if the element appears; False if not</returns>
+        </member>
+        <member name="T:TestAutomationEssentials.Selenium.Frame">
+            <summary>
+            Represents a HTML frame or iframe
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Frame.#ctor(TestAutomationEssentials.Selenium.BrowserElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestAutomationEssentials.Selenium.Frame"/> class representing the frame element specified
+            </summary>
+            <param name="frameElement">The BrowserElement of the frame element</param>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Frame.Activate">
+            <inheritdoc />
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.Frame.GetWebDriver">
+            <summary>
+            Returns the underlying <see cref="T:OpenQA.Selenium.IWebDriver"/>
+            </summary>
+            <returns>The underlying <see cref="T:OpenQA.Selenium.IWebDriver"/> object</returns>
+            <remarks>
+            Avoid calling <see cref="M:OpenQA.Selenium.IWebDriver.SwitchTo"/> on the returned object. If you do, make sure to 
+            Switch back to the same context before calling any method or property on any object derived from <see cref="T:TestAutomationEssentials.Selenium.ElementsContainer"/>. Failing to do so
+            will probably cause the method or property to fail.
+            </remarks>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.Frame.Browser">
+            <summary>
+            Returns the containing browser
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.Frame.DOMRoot">
+            <summary>
+            the root of the DOM that contains this object. This can be the browser, the containing frame or a window.
+            </summary>
+        </member>
+        <member name="T:TestAutomationEssentials.Selenium.IDOMRoot">
+            <summary>
+            Represents an object to which you can <see cref="M:OpenQA.Selenium.IWebDriver.SwitchTo"/> (except of Alert)
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Selenium.IDOMRoot.Activate">
+            <summary>
+            Ensures that the current object is active. Calling <see cref="M:OpenQA.Selenium.IWebDriver.SwitchTo"/> to do that if neccesary.
+            </summary>
+        </member>
+        <member name="P:TestAutomationEssentials.Selenium.IDOMRoot.Browser">
+            <summary>
+            Returns the <see cref="P:TestAutomationEssentials.Selenium.IDOMRoot.Browser"/> object which is the owner of this object
+            </summary>
+        </member>
+    </members>
+</doc>

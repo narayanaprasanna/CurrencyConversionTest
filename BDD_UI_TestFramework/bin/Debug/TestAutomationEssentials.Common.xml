@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestAutomationEssentials.Common</name>
+    </assembly>
+    <members>
+        <member name="T:TestAutomationEssentials.Common.ExtensionMethods">
+            <summary>
+            Provides various general-purpose useful extension methods
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.TryGet``2(``0,System.Func{``0,``1})">
+            <summary>
+            Returns the result of func(obj) if obj is not null, or null otherwise. Similiar to the <a href="https://msdn.microsoft.com/en-us/library/ty67wk28.aspx">Elvis Operator</a>
+            available in C# 6.
+            </summary>
+            <typeparam name="T1">The type of object</typeparam>
+            <typeparam name="T2">The type of the result of func</typeparam>
+            <param name="obj">The object to invoke the function on. Can be null</param>
+            <param name="func">The function to invoke on <paramref name="obj"/> in case it's not null</param>
+            <returns>The result of func(obj) if obj is ot null, or null otherwise</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="func"/> is null</exception>
+            <remarks>
+            This method is extremely useful when it is used when it is used few times in a row, to get a specific value from a complex data structure that any of its part may be null.
+            One common such scenario is when using objects that are generated through XSD.exe or a similiar tool.
+            </remarks>
+            <example>
+            var order = GetOrder(); // may return null
+            var street = order.(x =&gt; x.Customer).TryGet(x =&gt; x.Address).TryGet(x =&gt; x.Address);
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.SafeEquals``1(``0,``0)">
+            <summary>
+            Compares 2 objects, even if they're null.
+            </summary>
+            <typeparam name="T">The type of object</typeparam>
+            <param name="obj1">First object to compare</param>
+            <param name="obj2">2nd object to compare</param>
+            <returns><b>true</b> if the values of <paramref name="obj1"/> and <see cref="!:obj2"/> are the same, even if it's <b>null</b>. Otherwise <b>false</b></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.IsEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Determines whether the specified sequence is empty
+            </summary>
+            <typeparam name="T">The type of the elements in the sequence</typeparam>
+            <param name="source">The sequence</param>
+            <returns><b>true</b> if the sequence is empty, otherwise <b>false</b></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.SubArray``1(``0[],System.Int32,System.Int32)">
+            <summary>
+            Copies a portion of the array into a new array, given the start index and length
+            </summary>
+            <typeparam name="T">The type of the elements in the array</typeparam>
+            <param name="arr">The original array</param>
+            <param name="startIndex">The index of the first element to copy</param>
+            <param name="length">The number of elements to copy</param>
+            <returns>A new array containing only the specified elements</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.SubArray``1(``0[],System.Int32)">
+            <summary>
+            Copies a portion of the array into a new array, starting at the specified index up to the end of the array
+            </summary>
+            <typeparam name="T">The type of the elements in the array</typeparam>
+            <param name="arr">The original array</param>
+            <param name="startIndex">The index of the first element to copy</param>
+            <returns>A new array containing the last portion, starting at the specified index</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.MinutesAsMilliseconds(System.Int32)">
+            <summary>
+            Calculates the number of milliseconds in the specified number of minutes
+            </summary>
+            <param name="minutes">The number of minutes to convert to milliseconds</param>
+            <returns>The result of the calculation</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.SecondsAsMilliseconds(System.Int32)">
+            <summary>
+            Calculates the number of milliseconds in the specified number of seconds
+            </summary>
+            <param name="seconds">The number of seconds to convert to milliseconds</param>
+            <returns>The result of the calculation</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Milliseconds(System.Int32)">
+            <summary>
+            Returns a <b>TimeSpan</b> that represents the given number of milliseconds
+            </summary>
+            <param name="milliseconds">The number of milliseconds</param>
+            <returns>The <b>TimeSpan</b> struct that represent the given number of milliseconds</returns>
+            <example>
+            TimeSpan timeSpan = 3.Millisconds();
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Seconds(System.Int32)">
+            <summary>
+            Returns a <b>TimeSpan</b> that represents the given number of seconds
+            </summary>
+            <param name="seconds">The number of seconds</param>
+            <returns>The <b>TimeSpan</b> struct that represent the given number of seconds</returns>
+            <example>
+            TimeSpan timeSpan = 3.Seconds();
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Minutes(System.Int32)">
+            <summary>
+            Returns a <b>TimeSpan</b> that represents the given number of minutes
+            </summary>
+            <param name="minutes">The number of minutes</param>
+            <returns>The <b>TimeSpan</b> struct that represent the given number of minutes</returns>
+            <example>
+            TimeSpan timeSpan = 3.Minutes();
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Hours(System.Int32)">
+            <summary>
+            Returns a <b>TimeSpan</b> that represents the given number of hours
+            </summary>
+            <param name="hours">The number of hours</param>
+            <returns>The <b>TimeSpan</b> struct that represent the given number of hours</returns>
+            <example>
+            TimeSpan timeSpan = 3.Hours();
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.MutliplyBy(System.TimeSpan,System.Double)">
+            <summary>
+            Multiplies the specified TimeSpan by the specified multiplier
+            </summary>
+            <param name="multiplicand">The <b>TimeSpan</b> struct to multiply</param>
+            <param name="multiplier">The multiplier</param>
+            <returns>A <b>TimeSpan</b> representing the calculated multiplication</returns>
+            <example>
+            Assert.AreEquals(6.Minutes(), 2.Minutes().MultiplyBy(3));
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.ToSpokenString(System.TimeSpan)">
+            <summary>
+            Returns a string that represent the most significant portions of the specified <b>TimeSpan</b>
+            </summary>
+            <param name="timeSpan">The <b>TimeSpan</b> to convert to string</param>
+            <returns>The string that contains the significant portions of the TimeSpan</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.GetCurrentMainWindowTitle(System.Diagnostics.Process)">
+            <summary>
+            Returns the title of the main window of the specified process as it is now
+            </summary>
+            <param name="process">The process to look for its main window title</param>
+            <returns>The title of the main window</returns>
+            <remarks>
+            Unlike <see cref="P:System.Diagnostics.Process.MainWindowTitle"/>, this method always return the up-to-date title of the main window, even if it has changed after the <see cref="T:System.Diagnostics.Process"/> has been started
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Content``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the single element contained in the specified sequence
+            </summary>
+            <typeparam name="T">The type of the element inside the sequence</typeparam>
+            <param name="source">The sequence containing the single element</param>
+            <returns>The element contained in the sequence</returns>
+            <exception cref="T:System.ArgumentNullException">source is null</exception>
+            <exception cref="T:System.InvalidOperationException">The sequence is empty or it contains more than one element</exception>
+            <remarks>
+            This method is similiar to <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0})"/>
+            but provide more detailed message if it fails.
+            <br/>
+            Because it's not possible to "override" a static method, and in order to prevent the inadvertent use of the original 
+            <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0})"/> method, this class hides the original
+            method by declaring another method with the same name, and an [Obsolete] attribute.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Find``2(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)">
+            <summary>
+            Returns the single element in the specified sequence whose specified property has the specified value
+            </summary>
+            <typeparam name="T1">The type of the elements in the sequence</typeparam>
+            <typeparam name="T2">The type of the property</typeparam>
+            <param name="source">The sequence containing the element to look for</param>
+            <param name="propertyAccessor">A lambda expression that returns the property to compare with <paramref name="expectedValue"/></param>
+            <param name="expectedValue">The value of the property that the element should have</param>
+            <returns>The element that its property matches the expected value</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null or <paramref name="propertyAccessor"/> is null</exception>
+            <exception cref="T:System.InvalidOperationException">The sequence contains no matching element or it contains more than one matching element</exception>
+            <remarks>
+            This method is similiar to <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/>
+            but provide more detailed message if it fails.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Find``1(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Returns the single element in the specified sequence that matches the specified criteria
+            </summary>
+            <typeparam name="T">The type of the element in the sequence</typeparam>
+            <param name="source">The sequence containing the element to look for</param>
+            <param name="condition">A lambda expression of a condition that the matching element should pass</param>
+            <returns>The element that matches the specified condition</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="source"/> is null or <paramref name="condition"/> is null</exception>
+            <exception cref="T:System.InvalidOperationException">The sequence contains no matching element or it contains more than one matching element</exception>
+            <remarks>
+            This method is similiar to <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/>
+            but provide more detailed message if it fails.
+            <br/>
+            Because it's not possible to "override" a static method, and in order to prevent the inadvertent use of the original 
+            <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/> method, this class hides the original
+            method by declaring another method with the same name, and an [Obsolete] attribute.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Single``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            This method intentionally hides <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0})"/> in order to force you to use
+            <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Content``1(System.Collections.Generic.IEnumerable{``0})"/> instead.
+            </summary>
+            <typeparam name="T">The type of the elements in the sequence</typeparam>
+            <param name="source">A sequence</param>
+            <returns>Nothing</returns>
+            <exception cref="T:System.NotImplementedException">Always</exception>
+            <remarks>This method intentionally creates a compilation error if used! Use <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Content``1(System.Collections.Generic.IEnumerable{``0})"/> instead to get better error messages on failures</remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            This method intentionally hides <see cref="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/> in order to force you to use
+            <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Find``2(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)"/> or <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Find``1(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})"/> instead.
+            </summary>
+            <typeparam name="T">The type of the elements in the sequence</typeparam>
+            <param name="source">A sequence</param>
+            <param name="predicate">A condition that the element to look for should match</param>
+            <returns>Nothing</returns>
+            <exception cref="T:System.NotImplementedException">Always</exception>
+            <remarks>This method intentionally creates a compilation error if used! Use <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Find``2(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)"/> or <see cref="M:TestAutomationEssentials.Common.ExtensionMethods.Find``1(System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})"/> instead to get better error messages on failures</remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.AppendFormatLine(System.Text.StringBuilder,System.String,System.Object[])">
+            <summary>
+            Appends a a formatted line to a StringBuilder
+            </summary>
+            <param name="sb">The <see cref="T:System.Text.StringBuilder"/> to which to append the formatted line</param>
+            <param name="format">The format string</param>
+            <param name="args">Any arguments to embedded in the format string</param>
+            <remarks>
+            This method is a simple combination of <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object)"/> and <see cref="M:System.Text.StringBuilder.AppendLine"/>
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ExtensionMethods.AddRange``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``1})">
+            <summary>
+            Appends one dictionary to another
+            </summary>
+            <typeparam name="TKey">The type of the keys in the dictionaries</typeparam>
+            <typeparam name="TValue">The type of the values in the dictionaries</typeparam>
+            <param name="originalDictionary">The original dictionary to add the elements to</param>
+            <param name="additionalElements">The dictionary that contain the additional elements to add to the original dictionary</param>
+            <exception cref="T:System.ArgumentNullException">Either <paramref name="originalDictionary"/> or <paramref name="additionalElements"/> is null</exception>
+            <exception cref="T:System.ArgumentException">One or more keys exist for in originalDictionary and additionalElements</exception>
+        </member>
+        <member name="T:TestAutomationEssentials.Common.Functions">
+            <summary>
+            Provides general purpose methods that are useful for working in a functional manner in C#
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Functions.Negate(System.Func{System.Boolean})">
+            <summary>
+            Returns a new function that negates the result of another boolean function
+            </summary>
+            <param name="func">The original boolean function</param>
+            <returns>A new method that returns the opposite result of <paramref name="func"/></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Functions.EmptyAction">
+            <summary>
+            Returns a delegate to an <see cref="T:System.Action"/> that does nothing
+            </summary>
+            <returns>A delegate to an <see cref="T:System.Action"/> that does nothing</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Functions.EmptyAction``1">
+            <summary>
+            Returns a delegate to an <see cref="T:System.Action`1"/> that does nothing
+            </summary>
+            <returns>A delegate to an <see cref="T:System.Action`1"/> that does nothing</returns>
+        </member>
+        <member name="T:TestAutomationEssentials.Common.ImageExtensions">
+            <summary>
+            Provides useful methods to work with Images
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ImageExtensions.ToImage(System.Byte[])">
+            <summary>
+            Creates an image from a byte array
+            </summary>
+            <param name="bytes">A byte array that comprise the image, in every format that may be stored in a valid image file</param>
+            <returns>The corresponding image</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:TestAutomationEssentials.Common.ImageExtensions.FitToSize(System.Drawing.Image,System.Drawing.Size)" -->
+        <member name="T:TestAutomationEssentials.Common.PathUtils">
+            <summary>
+            Provide useful methods to work with file-system paths, beyond those in <see cref="T:System.IO.Path"/>
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.PathUtils.IsInFolder(System.String,System.String)">
+            <summary>
+            Determines whether the a file or folder is contained in another folder
+            </summary>
+            <param name="path">The path of the file or folder. This can be either a relative or full path</param>
+            <param name="containingFolder">The path of the folder to check if it contains <paramref name="path"/>. This can be eitehr a relative or full path</param>
+            <returns><b>true</b> if <paramref name="path"/> is inside <paramref name="containingFolder"/>, otherwise <b>false</b></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.PathUtils.GetDesktopFolder">
+            <summary>
+            Returns the absolute path of the desktop folder
+            </summary>
+            <returns>The absolute path of the desktop folder</returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.PathUtils.GetAncestorPath(System.String,System.String)">
+            <summary>
+            Returns the full path of the an ancestor folder of another path
+            </summary>
+            <param name="containingPath">A path to a file or folder inside <paramref name="ancestorFolderName"/>. If this path is relative, it is assumed to be relative to the current directory</param>
+            <param name="ancestorFolderName">The name of a folder that should be up the hierarchy of <paramref name="containingPath"/>. It's also possible to specify multiple nested folders that should be together in the hierarchy of <paramref name="containingPath"/></param>
+            <returns>The full path of <paramref name="ancestorFolderName"/></returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="containingPath"/> or <paramref name="ancestorFolderName"/> is <b>null</b></exception>
+            <exception cref="T:System.InvalidOperationException"><paramref name="ancestorFolderName"/> cannot be found up the hierarchy of <paramref name="containingPath"/></exception>
+            <example>
+            var ancestor = PathUtils.GetAncestorPath(@"C:\folder1\folder2\folder3\folder4", "folder2");
+            // ancestor == @"c:\folder1\folder2
+            </example>
+            <example>
+            var ancestor = PathUtils.GetAncestorPath(@"C:\folder1\folder2\folder3\folder4\folder3", "@"folder2\folder3"");
+            // ancestor == @"C:\folder1\folder2\folder3
+            </example>
+        </member>
+        <member name="T:TestAutomationEssentials.Common.ReflectionExtensions">
+            <summary>
+            Provides useful extension methods for working with Reflection, beyond those in <see cref="T:System.Reflection.CustomAttributeExtensions"/>
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ReflectionExtensions.HasAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            Determines whether the specified member has the specified attribute
+            </summary>
+            <typeparam name="TAttribute">The type of the attribute to search for</typeparam>
+            <param name="member">The member to inspect</param>
+            <returns><b>true</b> if the member has the specified attribute, otherwise <b>false</b></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ReflectionExtensions.DerivesFrom(System.Type,System.Type)">
+            <summary>
+            Determines whether the given type is a subclass of another type
+            </summary>
+            <param name="t1">The type to inspect</param>
+            <param name="t2">The type to check for being a base class of <paramref name="t1"/></param>
+            <returns><b>true</b> if <paramref name="t1"/> derives from <paramref name="t2"/>, otherwise <b>false</b></returns>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.ReflectionExtensions.GetDefaultValue(System.Type)">
+            <summary>
+            Returns the default value of the specified type
+            </summary>
+            <param name="t">The type to get its default value</param>
+            <returns>The default value of the specified type</returns>
+            <remarks>
+            This method is similiar to the expression: <code>default(T)</code> that is useful mainly in Generic methods.
+            However, with <code>default(T)</code> the type must be known at compile time (or be a generic type), while with this '
+            method, the type can be specified at run-time.
+            </remarks>
+        </member>
+        <member name="T:TestAutomationEssentials.Common.Wait">
+            <summary>
+            Provide convinient methods for waiting for a condition to come true.
+            </summary>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Wait.Until(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.TimeSpan)">
+            <summary>
+            Waits until the specified condition becomes true
+            </summary>
+            <param name="conditionExpr">A lamba expression containing the condition</param>
+            <param name="timeout">The maximum time to wait for the condition</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="conditionExpr"/> is null</exception>
+            <exception cref="T:System.TimeoutException">The condition didn't become true for the specified timeout</exception>
+            <example>
+            Wait.Until(() =&gt; PageIsLoaded(), 30.Seconds());
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Wait.While(System.Linq.Expressions.Expression{System.Func{System.Boolean}},System.TimeSpan)">
+            <summary>
+            Waits until the specified condition becomes false
+            </summary>
+            <param name="conditionExpr">A lambda expression containing the condition</param>
+            <param name="timeout">The maximum time to wait for the condition to become false</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="conditionExpr"/> is null</exception>
+            <exception cref="T:System.TimeoutException">The condition didn't become false for the specified timeout</exception>
+            <example>
+            Wait.While(() =&gt; PleaseWaitMessageAppears(), 30.Seconds());
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Wait.Until(System.Func{System.Boolean},System.TimeSpan,System.String)">
+            <summary>
+            Waits until the specified condition becomes true. In case of a timeout, the specified message is used in the exception
+            </summary>
+            <param name="condition">The condition to wait for to become true</param>
+            <param name="timeout">The maximum time to wait for the condition</param>
+            <param name="timeoutMessage">The message to use in the exception in case of a timeout</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="condition"/> is null</exception>
+            <exception cref="T:System.TimeoutException">The condition didn't become true for the specified timeout. The message of the 
+            exception is specified by the <paramref name="timeoutMessage"/> argument</exception>
+            <example>
+            Wait.Until(() =&gt; PageIsLoaded(), 30.Seconds(), "Page wasn't loaded!");
+            </example>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Wait.IfNot(System.Func{System.Boolean},System.TimeSpan)">
+            <summary>
+            Waits until the specified condition is met or until the specified period has passed, whichever comes first. This method doesn't throw TimeoutException.
+            </summary>
+            <param name="condition">The condition to evaluate</param>
+            <param name="period">The period to wait for the condition</param>
+            <returns>Whether the condition has been met</returns>
+            <remarks>
+            You should use it for non critical and possibly very short conditions that the polling may miss. After calling this method you should verify (or wait) 
+            for a different condition that indicates that the operation has actually completed or not.
+            </remarks>
+        </member>
+        <member name="M:TestAutomationEssentials.Common.Wait.If(System.Func{System.Boolean},System.TimeSpan)">
+            <summary>
+            Waits while the specified condition is met or until the specified period has passed. This method doesn't throw TimeoutException.
+            </summary>
+            <param name="condition">The condition to evaluate</param>
+            <param name="period">The period to wait for the condition</param>
+            <returns>Whether the condition has been met</returns>
+            <remarks>
+            You should use it for non critical and possibly very short conditions that the polling may miss. After calling this method you should verify (or wait) 
+            for a different condition that indicates that the operation has actually completed or not.
+            </remarks>
+        </member>
+    </members>
+</doc>
